@@ -1,1 +1,1 @@
-The wizard
+The Wizard
