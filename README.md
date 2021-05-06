@@ -1,1 +1,1 @@
-## This is the start of magic
+# This is the start of magic
