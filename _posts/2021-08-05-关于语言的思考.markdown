@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 语言的一点思考
+title: 关于语言的思考
 ---
 
 
