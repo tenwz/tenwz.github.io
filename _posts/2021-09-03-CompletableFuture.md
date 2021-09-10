@@ -14,11 +14,9 @@ title: CompletableFuture
 
 
 
-What is Monad ? https://stackoverflow.com/questions/44965/what-is-a-monad 
-
-----
 
 
+[What is Monad](https://stackoverflow.com/questions/44965/what-is-a-monad)
 
 
 
