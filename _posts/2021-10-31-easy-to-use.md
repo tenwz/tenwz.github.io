@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 一个cpu飙高问题定位的脚本
+title: 排查 CPU 问题的脚本
 
 
 
@@ -18,11 +18,23 @@ title: 一个cpu飙高问题定位的脚本
 
 先来看看使用该脚本生成dump文件内容：
 
-![img](https://img-blog.csdn.net/2018021800115355)
+|
+
+
+
+![](https://pocket-image-cache.com//filters:format(jpg):extract_focal()/https%3A%2F%2Fimg-blog.csdn.net%2F2018021800115355)
+
+
+
+|
 
 有了上图的文件，就可以直接在文件中找cpu占比为94.3的0x65c6等线程的对应代码
 
 为了方便多次采样，该脚本生成的文件名为  pid-$pid-时间.jstack ，默认放在/tmp目录下，比如如果是 ID 为 12345 的Java 进程的 cpu 占比最高，那么通过该脚本生成的文件有可能是 /tmp/pid-12345-20180217T22:51:03.jstack。
+
+|
+
+|
 
 附上该shell脚本代码：
 
@@ -60,6 +72,10 @@ echo "dump成功，请前往查看(文件名包含时间，为了采集更准确
 
 exit
 ```
+
+
+
+|
 
 记住，执行该脚本你得拥有使用jps、jstack等命令的权限。
 
