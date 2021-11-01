@@ -1,16 +1,3 @@
----
-layout: post
-title: 容器化发展名词释义
-
-
-
-
-
-
-
-
----
-
 在类UNIX操作系统中，每个[进程](https://zh.wikipedia.org/wiki/进程)都有自己的根目录。
 
 对于大多数进程，这与系统的实际根目录相同，但可以通过调用[chroot](https://zh.wikipedia.org/wiki/Chroot)系统命令调用来更改它。
@@ -74,7 +61,6 @@ chroot jail限制进程<u>只能</u>访问某个部分的文件系统
 - IP地址对应（IP-based）是指在同一部服务器上，借由同一份配置设置、不同的IP来管理多个服务。
 
 - 近似于IP地址对应，不过是在同一个IP之下，利用不同的Port端口号来区别不同的服务，藉以快速创建多个虚拟主机。例如：
-
     - 192.168.0.1:80
     - 192.168.0.1:8080
     - 192.168.0.1:8888
@@ -83,17 +69,13 @@ chroot jail限制进程<u>只能</u>访问某个部分的文件系统
 
 ---
 
-名字空间**（英语：Namespace）,它表示着一个[标识符](https://zh.wikipedia.org/wiki/标识符)（identifier）的可见范围。一个标识符可在多个名字空间中定义，它在不同名字空间中的含义是互不相干的。这样，在一个新的名字空间中可定义任何标识符，它们不会与任何已有的标识符发生冲突，因为已有的定义都处于其他名字空间中。
 
-这一特点是使用名字空间的主要理由。在大型的[计算机程序](https://zh.wikipedia.org/wiki/计算机程序)或[文档](https://zh.wikipedia.org/wiki/文档)中，往往会出现数百或数千个标识符。名字空间提供一隐藏区域标识符的机制。通过将逻辑上相关的标识符组织成相应的名字空间，可使整个系统更加[模块化](https://zh.wikipedia.org/wiki/模块化编程)。
 
-在[编程语言](https://zh.wikipedia.org/wiki/编程语言)中，名字空间是对[作用域](https://zh.wikipedia.org/wiki/作用域)的一种特殊的抽象，它包含了处于该作用域内的标识符，且本身也用一个标识符来表示，**<u>这样便将一系列在逻辑上相关的标识符用一个标识符组织了起来</u>。**许多现代编程语言都支持名字空间。在一些编程语言（例如[C++](https://zh.wikipedia.org/wiki/C%2B%2B)和[Python](https://zh.wikipedia.org/wiki/Python编程语言)）中，名字空间本身的标识符也属于一个外层的名字空间，也即名字空间可以嵌套，构成一个名字空间[树](https://zh.wikipedia.org/wiki/树_(数据结构))，树根则是无名的**全局名字空间**。
+2002 年，Linux Kernel 2.4.19 版内核引入了一种全新的隔离机制：[Linux 名称空间](https://en.wikipedia.org/wiki/Linux_namespaces)（Linux Namespaces）。2006年，Linux内核中开发出[cgroups](https://zh.wikipedia.org/wiki/Cgroups)。2007年，被加到Linux 2.6.24版内核中。2008年，基于cgroups，开发出[LXC](https://zh.wikipedia.org/wiki/LXC)，以及Docker。2013年被加入Linux 3.8版中。
 
-[函数](https://zh.wikipedia.org/wiki/函数_(计算机科学))和[类](https://zh.wikipedia.org/wiki/类_(计算机科学))的作用域可被视作[隐式](https://zh.wikipedia.org/w/index.php?title=隱式&action=edit&redlink=1)名字空间，它们和可见性、可访问性和[对象生命周期](https://zh.wikipedia.org/wiki/对象生命周期)不可分割的联系在一起。
+Linux 的名称空间是一种由内核直接提供的全局资源封装，是内核针对进程设计的访问隔离机制。进程在一个独立的 Linux 名称空间中朝系统看去，会觉得自己仿佛就是这方天地的主人，拥有这台 Linux 主机上的一切资源，不仅文件系统是独立的，还有着独立的 PID 编号（譬如拥有自己的 0 号进程，即系统初始化的进程）、UID/GID 编号（譬如拥有自己独立的 root 用户）、网络（譬如完全独立的 IP 地址、网络栈、防火墙等设置），等等.
 
-Linux 的名称空间是一种由内核直接提供的全局资源封装，是<u>内核针对进程设计的访问隔离机制</u>。进程在一个独立的 Linux 名称空间中拥有这台 Linux 主机上的一切资源，不仅文件系统是独立的，还有着独立的 PID 编号（譬如拥有自己的 0 号进程，即系统初始化的进程）、UID/GID 编号（譬如拥有自己独立的 root 用户）、网络（譬如完全独立的 IP 地址、网络栈、防火墙等设置），等等.
-
-到目前最新的 Linux Kernel 5.6 版内核,Linux 名称空间支持以下八种资源的隔离
+到目前最新的 Linux Kernel 5.6 版内核为止，Linux 名称空间支持以下八种资源的隔离（内核的官网[Kernel.org](https://www.kernel.org/)上仍然只列出了[前六种](https://www.kernel.org/doc/html/latest/admin-guide/namespaces/compatibility-list.html)，从 Linux 的 Man 命令能查到[全部八种](https://man7.org/linux/man-pages/man7/namespaces.7.html)）。
 
 | 名称空间 | 隔离内容                                                     | 内核版本 |
 | :------- | ------------------------------------------------------------ | -------- |
@@ -116,21 +98,3 @@ cgroups的一个设计目标是为不同的应用情况提供统一的接口，�
 - **优先级：**一些组可能会得到大量的CPU[[5\]](https://zh.wikipedia.org/wiki/Cgroups#cite_note-5) 或磁盘IO吞吐量。[[6\]](https://zh.wikipedia.org/wiki/Cgroups#cite_note-6)
 - **结算：**用来度量系统实际用了多少资源。[[7\]](https://zh.wikipedia.org/wiki/Cgroups#cite_note-lf-hansen-7)
 - **控制：**冻结组或检查点和重启动。
-
-它与名称空间一样都是直接由内核提供的功能，用于隔离或者说分配并限制某个进程组能够使用的资源配额，资源配额包括处理器时间、内存大小、磁盘 I/O 速度，等等，具体可以参见下表
-
-
-
-| 控制组子系统 | 功能                                                         |
-| ------------ | ------------------------------------------------------------ |
-| blkio        | 为块设备（如磁盘，固态硬盘，USB 等等）设定 I/O 限额。        |
-| cpu          | 控制`cgroups`中进程的处理器占用比率。                        |
-| cpuacct      | 自动生成`cgroups`中进程所使用的处理器时间的报告。            |
-| cpuset       | 为`cgroups`中的进程分配独立的处理器（包括多路系统的处理器，多核系统的处理器核心）。 |
-| devices      | 设置`cgroups`中的进程访问某个设备的权限（读、写、创建三种权限）。 |
-| freezer      | 挂起或者恢复`cgroups`中的进程。                              |
-| memory       | 设定`cgroups`中进程使用内存的限制，并自动生成内存资源使用报告。 |
-| net_cls      | 使用等级识别符标记网络数据包，可允许 Linux 流量控制程序识别从具体 `cgroups`中生成的数据包。 |
-| net_prio     | 用来设置网络流量的优先级。                                   |
-| hugetlb      | 主要针对于 HugeTLB 系统进行限制。                            |
-| perf_event   | 允许 Perf 工具基于`cgroups`分组做性能监测。                  |
