@@ -14,7 +14,7 @@ title: Y 组合子
 
 什么是 Y 组合子？
 
-![y](https://img1.doubanio.com/view/status/l/public/bc09fb7f07f253a.jpg)
+![](https://img1.doubanio.com/view/status/l/public/bc09fb7f07f253a.jpg)
 
 
 
@@ -54,11 +54,18 @@ lambda 演算中没有“命名”这个概念，因此写递归函数的时候�
 
 在正统的 Lambda 演算里函数全部是没有名字的，因此[递归函数](https://www.zhihu.com/search?q=递归函数&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A23893046})无法实现，考虑
 ![[公式]](https://www.zhihu.com/equation?tex=%5Cmathrm%7Bfib%7D%3D%5Clambda+x.%5Cmathrm%7Bif%7D%28x%3E0%29%5C%2C%5Cmathrm%7Bthen%7D%5C%2C%28x+%5Ctimes+%28%5Cmathrm%7Bfib%7D%5C%2C%28x-1%29%29%29%5C%2C%5Cmathrm%7Belse%7D%5C%2C%281%29)
-完美！
+由于 Lambda 表达式**本身没有名字**，因此在上式中 fib 实际上是**自由变量（[if-then-else](https://www.zhihu.com/search?q=if-then-else&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A23893046})可以用闭合 Lambda 表达式表示，它并不是库函数）**，和「递归」大相径庭。但是我们可以玩一点技巧：
+![[公式]](https://www.zhihu.com/equation?tex=%5Cmathrm%7Bfib%7D%27%3D%5Clambda+f.%5Clambda+x.%5Cmathrm%7Bif%7D%28x%3E0%29%5C%2C%5Cmathrm%7Bthen%7D%5C%2C%28x+%5Ctimes+%28f%5C%2C%28x-1%29%29%29%5C%2C%5Cmathrm%7Belse%7D%5C%2C%281%29)
+这个函数是闭合的，我们用参数 f 代表递归，fib 本身的定义则是：
+![[公式]](https://www.zhihu.com/equation?tex=%5Cmathrm%7Bfib%7D+%3D+%5Cmathrm%7Bfib%7D%27%5C%2C%5Cmathrm%7Bfib%7D)
+还是有问题，不要紧，进一步处理它
+![[公式]](https://www.zhihu.com/equation?tex=%5Cmathrm%7Bfib%7D+%3D+Y%5C%2C%5Cmathrm%7Bfib%7D%27)，其中![[公式]](https://www.zhihu.com/equation?tex=Y%3D%5Clambda+f.f%5C%2C%28Y%5C%2Cf%29)
+把它展开看看，结果是：
+![[公式]](https://www.zhihu.com/equation?tex=%5Cmathrm%7Bfib%7D+%3D+Y%5C%2C%5Cmathrm%7Bfib%7D%27%3D%5Cmathrm%7Bfib%7D%27%5C%2C%28Y+%5Cmathrm%7Bfib%7D%27%29%3D%5Cmathrm%7Bfib%7D%27%5C%2C%5Cmathrm%7Bfib%7D)
+完美~
 
 于是我们现在惟一的任务就是写出一个闭合的 Lambda [表达式](https://www.zhihu.com/search?q=表达式&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A23893046})和 Y 等效，所幸 Haskell B. Curry 找到了一个：
 ![[公式]](https://www.zhihu.com/equation?tex=Y+%3D+%5Clambda+f.%28%5Clambda+x+.f%5C%2C%28x%5C%2Cx%29%29%28%5Clambda+x+.f%5C%2C%28x%5C%2Cx%29%29)
 试试调用它（在传名调用下）：
 ![[公式]](https://www.zhihu.com/equation?tex=%5Cbegin%7Beqnarray%7D%0AY%5C%2Cg+%26+%3D+%26+%28%5Clambda+x.+g%5C%2C%28x%5C%2Cx%29%29%28%5Clambda+x.+g%5C%2C%28x%5C%2Cx%29%29%5C%5C%0A%26%3D%26+g+%5C%2C%28%28%5Clambda+x.+g%5C%2C%28x%5C%2Cx%29%29%28%5Clambda+x.+g%5C%2C%28x%5C%2Cx%29%29%29+%5C%5C%0A%26%3D%26++g%5C%2C%28Y%5C%2Cg%29%0A%5Cend%7Beqnarray%7D)
 完美！
-
