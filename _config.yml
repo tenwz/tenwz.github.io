@@ -19,11 +19,11 @@
 # in the templates via {{ site.myvariable }}.
 
 title: The Little Wizard
-email: tengwz@mail.com
+email: tenwz1@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Structure and Interpretation of Computer Programs
+  滕文证
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://tenwz.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: tenwz1
 github_username:  tenwz
 
