@@ -4,22 +4,25 @@
 @import "minima";
 
 // 自定义字体配置：早期 iOS/macOS 风格 - Helvetica + 华文黑体
-$base-font-family: "Helvetica Neue", Helvetica, "STHeiti", "Heiti SC", "SimHei", sans-serif !default;
+$custom-font-family: "Helvetica Neue", Helvetica, "STHeiti", "Heiti SC", "SimHei", sans-serif;
 
-// 应用到整个页面
+// 强制应用到所有元素
+* {
+  font-family: $custom-font-family !important;
+}
+
+// 代码块保持等宽字体（覆盖上面的强制规则）
+code, pre, code *, pre *, .highlight, .highlight * {
+  font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace !important;
+}
+
+// 平滑字体渲染
 body {
-  font-family: $base-font-family;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-// 标题也使用相同字体族
+// 标题加粗
 h1, h2, h3, h4, h5, h6 {
-  font-family: $base-font-family;
   font-weight: 600;
-}
-
-// 代码块保持等宽字体
-code, pre {
-  font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace;
 }
