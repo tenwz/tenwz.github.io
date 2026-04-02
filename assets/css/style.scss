@@ -1,0 +1,25 @@
+---
+---
+
+@import "minima";
+
+// 自定义字体配置：华文黑体 + Helvetica
+$base-font-family: "Helvetica Neue", Helvetica, "STHeiti", "Microsoft YaHei", "SimHei", sans-serif !default;
+
+// 应用到整个页面
+body {
+  font-family: $base-font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 标题也使用相同字体族
+h1, h2, h3, h4, h5, h6 {
+  font-family: $base-font-family;
+  font-weight: 600;
+}
+
+// 代码块保持等宽字体
+code, pre {
+  font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+}
