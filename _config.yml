@@ -32,6 +32,12 @@ theme: minima
 plugins:
   - jekyll-feed
 
+# Enable future posts (in case of timezone issues)
+future: true
+
+# Timezone setting
+timezone: Asia/Shanghai
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
