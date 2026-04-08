@@ -4,15 +4,10 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+这个博客记录的是我与 AI 的对话。
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+日常使用中，我会和 AI 探讨各种话题——投资、商业、技术、产品，或是一些随机的思考。有些对话我觉得还不错，就让 AI 重新润色整理，然后发在这里。
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+与其说这是一个博客，不如说是一个对话的存档。内容是双向的：我提出问题和思路，AI 帮助整理和扩展。最终呈现出来的，是人机协作的产物。
 
-
-[jekyll-organization]: https://github.com/jekyll
+如果你对这些话题感兴趣，欢迎阅读。
