@@ -1,4 +1,4 @@
-/* ssi.inc 风格：深底、等宽字体、荧光绿链接，整站居中 */
+/* ssi.inc 风格：深底、等宽字体、荧光绿链接；栏居中，正文左对齐 */
 :root {
   color-scheme: dark;
   --bg: #111213;
@@ -8,9 +8,13 @@
 
 body {
   padding: 0 16px;
-  margin: 50px auto;
+  margin: 0 auto;
   max-width: 640px;
-  text-align: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
   background-color: var(--bg);
   color: var(--fg);
   font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas,
