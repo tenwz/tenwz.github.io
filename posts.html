@@ -7,15 +7,6 @@
   <meta name="description" content="Tenwz 的全部文章">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="https://github.com/tenwz.png">
-  <script>
-    (function () {
-      var saved = localStorage.getItem("theme");
-      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (saved === "dark" || (!saved && prefersDark)) {
-        document.documentElement.setAttribute("data-theme", "dark");
-      }
-    })();
-  </script>
 </head>
 <body>
   <div class="container">
@@ -25,7 +16,6 @@
       <nav class="nav">
         <a href="/">首页</a>
         <a href="about.html">关于</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="切换深色模式">🌙</button>
       </nav>
     </header>
 
@@ -64,20 +54,5 @@
 
   </div>
 
-  <script>
-    var toggle = document.getElementById("themeToggle");
-    var root = document.documentElement;
-    function render() {
-      toggle.textContent = root.getAttribute("data-theme") === "dark" ? "☀️" : "🌙";
-    }
-    toggle.addEventListener("click", function () {
-      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      if (next === "dark") root.setAttribute("data-theme", "dark");
-      else root.removeAttribute("data-theme");
-      localStorage.setItem("theme", next);
-      render();
-    });
-    render();
-  </script>
 </body>
 </html>
