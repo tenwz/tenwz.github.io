@@ -1,4 +1,4 @@
-/* ssi.inc 风格：深底、Helvetica/华文黑体、荧光绿链接 */
+/* ssi.inc 风格：深底、等宽字体、荧光绿链接，整站居中 */
 :root {
   color-scheme: dark;
   --bg: #111213;
@@ -8,17 +8,14 @@
 
 body {
   padding: 0 16px;
-  margin: 0 auto;
+  margin: 50px auto;
   max-width: 640px;
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: safe center;
+  text-align: center;
   background-color: var(--bg);
   color: var(--fg);
-  font-family: Helvetica, "Heiti SC", "STHeiti", sans-serif;
-  font-size: 1rem;
+  font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.9rem;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
 }
@@ -31,23 +28,23 @@ h1 {
 h2 {
   font-size: 1rem;
   font-weight: normal;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.15em;
   color: #9a9a9a;
   margin: 1.8em 0 0.4em;
 }
 
-p {
-  text-align: justify;
-  margin: 0.6em 0;
-}
-
 ul {
+  list-style: none;
   margin: 0.6em 0;
-  padding-left: 1.3em;
+  padding: 0;
 }
 
 li {
-  margin: 0.2em 0;
+  margin: 0.3em 0;
+}
+
+blockquote {
+  margin: 0.6em 0;
 }
 
 a {
