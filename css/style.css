@@ -9,20 +9,13 @@
 body {
   box-sizing: border-box;
   padding: 0 16px;
-  margin: 0 auto;
-  width: fit-content;
+  margin: 50px auto;
   max-width: 640px;
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: safe center;
   background-color: var(--bg);
   color: var(--fg);
   font-family: system-ui, sans-serif;
   font-size: 0.9rem;
-  line-height: 1.75;
-  -webkit-font-smoothing: antialiased;
+  line-height: 1.4;
 }
 
 h1 {
@@ -34,7 +27,6 @@ h2 {
   font-size: 0.8rem;
   font-weight: normal;
   letter-spacing: 0.15em;
-  color: #9a9a9a;
   margin: 1.8em 0 0.4em;
 }
 
