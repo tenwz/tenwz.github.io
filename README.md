@@ -1,6 +1,6 @@
-# Tenwz 的主页
+# 滕文证 Teng Wenzheng
 
-最早期的个人网页风格：浏览器默认衬线字体、默认蓝色链接、`<hr>` 分隔、纯标题 + 段落 + 列表。
+模仿 [ssi.inc](https://ssi.inc) 的极简风格：深色底、等宽字体、荧光绿链接，除一段十来行的样式表外没有任何多余样式。
 
 部署在 GitHub Pages：<https://tenwz.github.io>
 
@@ -9,18 +9,16 @@
 ## 文件结构
 
 ```
-├── index.html          # 主页（介绍 / 文章 / 项目 / 联系）
-├── posts.html          # 全部文章列表
-├── about.html          # 关于我
+├── index.html          # 主页（介绍 / 文章 / 项目 / 联系），兼作文章列表
 ├── posts/              # 文章目录，每篇文章一个 HTML 文件
 │   └── hello-world.html
-└── css/style.css       # 几行基础样式（衬线字体 + 居中栏宽）
+└── css/style.css       # 十几行基础样式（深底 + 等宽字体 + 居中栏宽）
 ```
 
 ## 如何写新文章
 
 1. 复制 `posts/hello-world.html` 为新文件，改标题、日期和正文。
-2. 在 `index.html` 和 `posts.html` 的文章列表各加一行 `<li>`（注意相对路径：文章内引用样式是 `../css/style.css`，列表页里是 `css/style.css`）。
+2. 在 `index.html` 的文章列表加一行 `<li>`（注意相对路径：文章内引用样式是 `../css/style.css`，主页里是 `css/style.css`）。
 3. 提交推送，约一分钟后自动上线。
 
 ## 绑定自定义域名

@@ -1,18 +1,38 @@
-/* 极简样式：白纸黑字 + 浏览器默认衬线字体 + 经典链接色 */
+/* ssi.inc 风格：深底等宽字、荧光绿链接，仅此而已 */
+:root {
+  color-scheme: dark;
+  --bg: #111213;
+  --fg: #d6d6d6;
+  --green: #39ff14;
+}
+
 body {
-  background: #ffffff;
-  color: #000000;
-  font-family: "Times New Roman", Times, serif;
-  max-width: 42em;
-  margin: 0 auto;
-  padding: 2em 1.5em;
-  line-height: 1.6;
+  padding: 0 10px;
+  margin: 50px auto;
+  max-width: 650px;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1rem;
 }
 
 a {
-  color: #0000ee;
+  color: var(--green);
+  text-decoration: none;
 }
 
-a:visited {
-  color: #551a8b;
+a:hover,
+a:focus {
+  text-decoration: underline;
 }
