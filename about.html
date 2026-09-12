@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于 · Tenwz</title>
+  <meta name="description" content="关于 Tenwz">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="https://github.com/tenwz.png">
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (saved === "dark" || (!saved && prefersDark)) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+
+    <header class="site-header">
+      <a class="site-mark" href="/">🧙</a>
+      <nav class="nav">
+        <a href="/">首页</a>
+        <a href="posts.html">帖子</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色模式">🌙</button>
+      </nav>
+    </header>
+
+    <section class="article">
+      <div class="article-header">
+        <div class="date">About</div>
+        <h1>关于我</h1>
+      </div>
+
+      <div class="article-body">
+        <p>我是 Tenwz，一个喜欢折腾的开发者，网名取自「a little wizard」。</p>
+        <p>平时写写 Python 和 TypeScript，感兴趣的方向包括量化、RSS 与信息流、效率工具。习惯把想法先做成能跑的小东西，再慢慢打磨。</p>
+        <p>这个博客用来记录折腾的过程和思考，尽量做到「写下来就算学会了」。</p>
+
+        <h2>我在用什么</h2>
+        <ul>
+          <li>编辑器与终端：macOS + iTerm2</li>
+          <li>阅读：NetNewsWire 订阅 RSS</li>
+          <li>写作：markdown 优先</li>
+        </ul>
+
+        <h2>找到我</h2>
+        <ul>
+          <li>GitHub：<a href="https://github.com/tenwz">tenwz</a></li>
+          <li>Email：<a href="mailto:tenwz@icloud.com">tenwz@icloud.com</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider">
+      <svg width="220" height="12" viewBox="0 0 220 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 6 Q 6.875 0, 13.75 6 T 27.5 6 T 41.25 6 T 55 6 T 68.75 6 T 82.5 6 T 96.25 6 T 110 6 T 123.75 6 T 137.5 6 T 151.25 6 T 165 6 T 178.75 6 T 192.5 6 T 206.25 6 T 220 6" stroke="var(--squiggle)" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+
+    <footer class="site-footer">
+      © 2026 Tenwz · Powered by <a href="https://pages.github.com/">GitHub Pages</a>
+    </footer>
+
+  </div>
+
+  <script>
+    var toggle = document.getElementById("themeToggle");
+    var root = document.documentElement;
+    function render() {
+      toggle.textContent = root.getAttribute("data-theme") === "dark" ? "☀️" : "🌙";
+    }
+    toggle.addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      if (next === "dark") root.setAttribute("data-theme", "dark");
+      else root.removeAttribute("data-theme");
+      localStorage.setItem("theme", next);
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>帖子 · Tenwz</title>
+  <meta name="description" content="Tenwz 的全部文章">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="https://github.com/tenwz.png">
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (saved === "dark" || (!saved && prefersDark)) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+
+    <header class="site-header">
+      <a class="site-mark" href="/">🧙</a>
+      <nav class="nav">
+        <a href="/">首页</a>
+        <a href="about.html">关于</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色模式">🌙</button>
+      </nav>
+    </header>
+
+    <section class="section">
+      <h2>全部帖子</h2>
+
+      <div class="rows">
+        <div class="row">
+          <div class="meta">2026 - 09 月 12 日</div>
+          <div>
+            <div class="title"><a href="posts/hello-world.html">重新开张：把博客搬回 GitHub Pages</a></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="meta">08 月 30 日</div>
+          <div>
+            <div class="title">近期折腾的工具清单</div>
+          </div>
+        </div>
+      </div>
+
+      <p style="color: var(--text-tertiary); font-size: 0.9rem; margin-top: 2.5rem;">
+        更多帖子在写了，敬请期待。
+      </p>
+    </section>
+
+    <div class="divider">
+      <svg width="220" height="12" viewBox="0 0 220 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 6 Q 6.875 0, 13.75 6 T 27.5 6 T 41.25 6 T 55 6 T 68.75 6 T 82.5 6 T 96.25 6 T 110 6 T 123.75 6 T 137.5 6 T 151.25 6 T 165 6 T 178.75 6 T 192.5 6 T 206.25 6 T 220 6" stroke="var(--squiggle)" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+
+    <footer class="site-footer">
+      © 2026 Tenwz · Powered by <a href="https://pages.github.com/">GitHub Pages</a>
+    </footer>
+
+  </div>
+
+  <script>
+    var toggle = document.getElementById("themeToggle");
+    var root = document.documentElement;
+    function render() {
+      toggle.textContent = root.getAttribute("data-theme") === "dark" ? "☀️" : "🌙";
+    }
+    toggle.addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      if (next === "dark") root.setAttribute("data-theme", "dark");
+      else root.removeAttribute("data-theme");
+      localStorage.setItem("theme", next);
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>
