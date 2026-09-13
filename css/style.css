@@ -13,8 +13,8 @@ body {
   max-width: 640px;
   background-color: var(--bg);
   color: var(--fg);
-  font-family: Arial, Helvetica, "Noto Sans", "Noto Sans CJK SC",
-    "Microsoft YaHei", sans-serif;
+  font-family: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB",
+    sans-serif;
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -58,7 +58,7 @@ pre {
 }
 
 pre code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 }
 
 table {
