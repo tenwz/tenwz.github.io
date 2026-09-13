@@ -33,8 +33,11 @@ h1 {
 h2 {
   font-size: 0.8rem;
   font-weight: normal;
-  letter-spacing: 0.15em;
   margin: 1.8em 0 0.4em;
+}
+
+.home-page h2 {
+  letter-spacing: 0.15em;
 }
 
 ul {
