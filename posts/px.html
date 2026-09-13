@@ -13,181 +13,96 @@
 
     <p><small>2026-09-13</small></p>
 
-    <h2>1. 概述</h2>
-    <p>PX 为 Pi 提供与 OpenAI Agents API 一致的接口，使应用、服务和其他 Agent 能够以标准方式调用运行在本机上的 Pi。</p>
-    <p>PX 不引入新的 Agent Runtime，也不创建新的运行环境：</p>
-    <ul>
-      <li>Agent 逻辑仍由 Pi 负责</li>
-      <li>代码、工具、凭证、环境仍留在本机</li>
-      <li>Session 状态由 PX 持久化，Agent 进程无需常驻</li>
-    </ul>
+    <p>Agent 最缺的可能不是更多工具，而是一个能保存上下文、等待现实世界变化，并在合适的时候继续工作的地方。</p>
 
+    <h2>1. 为什么是 PX</h2>
+    <p>现在做一个 Agent 并不难。让模型调用工具、读取文件、返回结果，已经有了成熟的运行时。真正难的是：当工作没有在一次请求里结束时，谁来记住它，谁来在未来把它重新叫醒？</p>
+    <p>Pi 已经是一个很好的 Agent runtime。它知道怎样组织上下文、调用工具、执行扩展，也知道怎样完成一次完整的 Agent Turn。PX 不应该再做一套 Agent runtime，更不应该把 Pi 已经拥有的能力重新包装一遍。</p>
+    <p>PX 想解决的是另一段缺失的生命周期：让运行在本机的 Pi 能够被应用访问，能够在进程停止后保留工作状态，并且在外部事件发生时继续工作。</p>
+
+    <blockquote><p>Pi 负责 Agent 能做什么。PX 负责它什么时候再次醒来。</p></blockquote>
+
+    <h2>2. 先把边界说清楚</h2>
+    <p>PX 的核心不是把所有能力都收进来，而是把职责压缩到足够小：</p>
+    <pre><code>Pi
+├── Session
+├── Agent Runtime
+├── Tools
+└── Extensions
+
+PX
+├── Serve
+├── Session lifecycle
+├── Watch
+└── Recovery</code></pre>
+
+    <p>外部服务的能力应该拆成两个运行位置：</p>
+    <ul>
+      <li><strong>Pi Extension：</strong>Agent 主动做什么，例如搜索 Gmail、读取 Issue、发送 Slack。</li>
+      <li><strong>PX Event Source：</strong>未来发生什么，例如收到邮件、Issue 更新、Webhook 到达。</li>
+    </ul>
+    <p>一个 Integration 可以同时提供这两部分，但它们不共享一个庞大的 Connector Runtime。共享的只应是凭证引用、配置和元数据。</p>
+
+    <h2>3. Serve：让应用找到本地 Agent</h2>
+    <p>Serve 是 PX 的入口。它提供一组与 OpenAI Agents API 核心语义兼容的接口，让已有的客户端可以用熟悉的方式创建任务、继续 Session、接收流式事件和读取结果。</p>
     <pre><code>应用
   ↓
-Agents API
+Agents API 兼容层
   ↓
-PX
+PX Serve
   ↓
-Pi
+Pi Session
   ↓
 本机环境</code></pre>
+    <p>但 API 兼容本身不是产品价值。它只是降低接入成本的入口。真正有价值的是：请求断开以后，工作仍然存在；Pi 进程退出以后，Session 仍然可以恢复。</p>
 
-    <h2>2. 快速开始</h2>
-    <pre><code># 启动服务
-px serve
-
-# 连接外部服务
-px connect github
-px connect gmail
-px connect slack</code></pre>
-    <p>启动后，本机 Pi 即可通过 Agents API 兼容接口被外部应用访问。</p>
-
-    <h2>3. 核心概念</h2>
-
-    <h3>3.1 Serve：让应用找到 Pi</h3>
-    <p>PX 将本机 Pi 暴露为符合 OpenAI Agents API 规范的服务端点。应用可以：</p>
+    <h2>4. Session：工作的基本单位</h2>
+    <p>一次请求通常太短。一项真实工作可能经历调查、修改、等待 Review，再回来处理新的反馈。PX 因此把 Session 而不是 Request 作为持续工作的基本单位。</p>
+    <pre><code>请求 A → Session → 调查 → 暂停
+                          ↓
+请求 B → 同一个 Session → 修改 → 继续</code></pre>
+    <p>Session 至少需要保证：</p>
     <ul>
-      <li>发起新任务（创建 Session）</li>
-      <li>继续已有 Session</li>
-      <li>接收执行过程与结果</li>
-      <li>断开连接后随时回来（Session 不随连接消失）</li>
+      <li>上下文和执行记录可以持久化；</li>
+      <li>客户端断线不会让工作消失；</li>
+      <li>同一 Session 不会同时执行两个互相竞争的 Turn；</li>
+      <li>进程崩溃后能够恢复到一个可解释的状态。</li>
     </ul>
 
-    <h3>3.2 Connect：让 Pi 访问外部世界</h3>
-    <p>通过 <code>px connect &lt;service&gt;</code> 将外部服务注册为 Pi 的可用能力。连接后 Pi 可以：</p>
-    <ul>
-      <li>读取 GitHub Issue</li>
-      <li>搜索、读取 Gmail 邮件</li>
-      <li>发送 Slack 消息</li>
-      <li>检查部署状态</li>
-    </ul>
-    <p>凭证在连接时完成授权，不进入对话上下文。Pi 只感知到“这些操作现在可以执行”。</p>
-
-    <h3>3.3 Session：工作的基本单位</h3>
-    <p>Agent 的工作很少在一次请求内结束。一次 Bug 调查可能演变为修改，修改进入 Review，Review 又引出新的问题。因此 PX 以 Session 而非 Request 为持续工作的基本单位：</p>
-    <pre><code>请求 → Session → 工作 → 停止
-                       （任意时间间隔）
-请求 → 同一个 Session → 继续工作</code></pre>
-    <ul>
-      <li>Session 的上下文被持久化</li>
-      <li>Agent 进程停止后 Session 仍然存在</li>
-      <li>下一次请求通过 Session ID 恢复到同一上下文</li>
-    </ul>
-
-    <h3>3.4 Watch：让 Session 在未来醒来</h3>
-    <p>PX 允许一个 Session 在停止前留下 Watch，声明“什么条件值得让我恢复”。条件命中时，PX 恢复该 Session，原有上下文完整保留。</p>
+    <h2>5. Watch：让未来的世界叫醒它</h2>
+    <p>Agent 工作到一半时，经常只能等待：等待一封邮件、一个 CI 结果、一次 Review、一个时间点。如果 Agent 必须一直运行来等待，成本高，也很容易因为进程退出而丢失上下文。</p>
+    <p>Watch 把“等待”变成一种持久化声明：</p>
     <pre><code>Session
-   ↓ 留下
- Watch
-   ↓ 等待
-条件命中
+   ↓ 留下 Watch
+PX Event Source
+   ↓ 监听
+事件命中
    ↓
 恢复同一个 Session</code></pre>
-    <p>一个 Session 可以同时持有多个 Watch：</p>
-    <pre><code>Session
-  ├── Watch: Gmail
-  ├── Watch: GitHub
-  ├── Watch: 新用户注册
-  ├── Watch: 市场行情
-  └── Watch: 时间</code></pre>
+    <p>Watch 不应该被设计成一套复杂的规则语言。用户可以用自然语言表达意图，Agent 决定需要监听什么；PX 只负责可靠地接收事件、去重、匹配，并在合适的时候恢复 Session。</p>
+    <p>能用代码判断的，不唤醒模型，例如特定发件人、CI 失败、定时器到点。需要语义理解的，再使用一个轻量判断步骤，例如“这是不是一封重要的邮件”。</p>
 
-    <h2>4. Watch 详解</h2>
-
-    <h3>4.1 声明方式：由 Agent 创建，而非人工配置</h3>
-    <p>Watch 不需要用户编写规则语言（如 <code>ON event WHERE ... THEN ...</code>）。用户只需用自然语言表达意图：</p>
-    <blockquote><p>“如果老板给我发邮件，告诉我。”</p></blockquote>
-    <p>后续工作由 Agent 自行决定：</p>
+    <h2>6. 并发：不是让同一个 Agent 同时跑两条路</h2>
+    <p>Pi 可以并发运行多个 Session，也可以在一个 Turn 内并行调用互不冲突的 Tool。PX 要做的不是重新发明并发，而是建立并发边界：Serve 可以高并发接收请求，但同一 Session 仍然应该只有一个执行通道。</p>
     <ul>
-      <li>观察什么数据源</li>
-      <li>检查频率</li>
-      <li>什么算“老板的邮件”</li>
-      <li>判断是否需要模型参与</li>
-      <li>何时停止观察</li>
+      <li>不同 Session、不同项目、互不冲突的只读任务，可以并发。</li>
+      <li>同一 Session、同一目录的写操作、不可重复的外部副作用，需要排队或隔离。</li>
     </ul>
+    <p>这也是 PX 的一项基础能力：管理队列、取消、超时、资源上限和恢复，而不是把“并发”简单理解为同时启动更多模型请求。</p>
 
-    <h3>4.2 条件判断的两级模型</h3>
-    <p>代码级判断——条件可确定化为布尔逻辑时，不唤醒 Agent，也不调用模型：</p>
-    <pre><code>事件 → 代码判断 → true → 恢复 Session</code></pre>
-    <p>适用场景：</p>
-    <ul>
-      <li>收到来自特定邮箱的邮件</li>
-      <li>CI 构建失败</li>
-      <li>股价上涨超过 5%</li>
-      <li>第 100 个新用户注册</li>
-    </ul>
-    <p>AI 级判断——条件需要语义理解时，由一个小型判断 Agent 评估：</p>
-    <pre><code>事件 → AI 判断 → true → 恢复 Session
-              ↘ false → 不动作</code></pre>
-    <p>判断 Agent 只需回答一个问题：“现在值得叫醒它吗？”</p>
-    <p>适用场景：</p>
-    <ul>
-      <li>有“重要”邮件时通知我</li>
-      <li>出现异常用户行为时提醒我</li>
-      <li>客户明显不满意时介入</li>
-      <li>等到“这件事值得继续处理”时再回来</li>
-    </ul>
-
-    <h3>4.3 时间是一种特殊事件</h3>
-    <p>定时触发不调度整个 Agent，而是调度一次“注意力检查”：</p>
-    <pre><code>时间到 → 检查 → 有值得处理的变化？→ 否：什么都不发生
-                                   → 是：恢复 Session</code></pre>
-    <p>因此：</p>
-    <ul>
-      <li>“明天再看” = 明天做一次检查</li>
-      <li>“每天早上检查一次” = 每天一次注意力检查，而非每天运行完整 Agent</li>
-      <li>“一直检查直到 Release 发布” = 重复检查，命中即停</li>
-    </ul>
-
-    <h3>4.4 动态规划：下一步在下一步决定</h3>
-    <p>Watch 可以链式产生。Session 因某事件醒来后，处理完当前工作可以再留下新的 Watch：</p>
-    <pre><code>Session → Watch A → 事件 A → Session → Watch B → 事件 B → ...</code></pre>
-    <p>无需预先定义完整 Workflow。示例：邮件中提到“API 下周发布”→ 处理邮件 → 留下 Watch“发布后再检查一次”→ 停止。</p>
-
-    <h3>4.5 资源模型：Agent 无需常驻</h3>
-    <pre><code>工作（分钟级） → 停止（天级） → 事件命中 → 恢复</code></pre>
-    <p>长期运行的不是进程，而是 Session + Watch 的组合。</p>
-
-    <h2>5. 架构总结</h2>
-    <pre><code>                  外部世界
-              ↙      ↓      ↘
-          Gmail    GitHub    Time
-              \      |      /
-                   Watch
-                     ↓
-应用 ── Agents API ── PX ── Pi Session
-                     ↕
-                  Connect</code></pre>
-
-    <p>职责划分：</p>
-    <table>
-      <thead>
-        <tr>
-          <th>组件</th>
-          <th>职责</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Pi</td>
-          <td>Agent 推理与执行</td>
-        </tr>
-        <tr>
-          <td>本机</td>
-          <td>环境：代码、工具、凭证</td>
-        </tr>
-        <tr>
-          <td>外部服务</td>
-          <td>各自的数据与事件</td>
-        </tr>
-        <tr>
-          <td>PX</td>
-          <td>连接以上三者：Serve（暴露）、Connect（接入）、Watch（唤醒）</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2>7. 先做一条完整链路</h2>
+    <p>PX 不应该从完整生态开始。第一版最重要的不是支持多少 Connector，而是证明下面这条链路真的有用：</p>
+    <ol>
+      <li>应用通过兼容接口创建一个任务；</li>
+      <li>PX 启动或恢复一个 Pi Session；</li>
+      <li>Session 完成一段工作并留下 Watch；</li>
+      <li>外部事件到达后，PX 去重并重新唤醒它；</li>
+      <li>应用可以继续看到同一个 Session 的结果。</li>
+    </ol>
+    <p>如果这条链路成立，Serve、Watch、持久化和恢复才不再是孤立的工程模块，而会变成一种新的使用方式：把 Agent 当成一项可以持续推进的工作，而不是一次性聊天请求。</p>
 
     <h2>一句话描述 PX</h2>
-    <p>PX 为运行在本机的 Pi 提供与 OpenAI Agents API 一致的接口，并通过 Connect 接入外部服务、Watch 让已停止的 Session 在条件命中时自动恢复，使任何一台机器都能成为可持久工作的 Agent 服务。</p>
+    <p>PX 不是另一个 Agent runtime。它是 Pi 的服务层、生命周期层，以及让停止的工作在未来继续发生的那一小段基础设施。</p>
 
     <p><small><a href="../index.html">返回</a></small></p>
   </main>
