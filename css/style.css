@@ -6,6 +6,11 @@
   --green: #39ff14;
 }
 
+html {
+  background-color: var(--bg);
+  scrollbar-gutter: stable;
+}
+
 body {
   box-sizing: border-box;
   padding: 0 16px;
@@ -17,6 +22,8 @@ body {
     sans-serif;
   font-size: 0.9rem;
   line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .page-content {
@@ -37,7 +44,13 @@ h2 {
 }
 
 .home-page h2 {
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
+}
+
+h3 {
+  font-size: 0.8rem;
+  font-weight: normal;
+  margin: 1.8em 0 0.4em;
 }
 
 ul {
@@ -60,7 +73,7 @@ pre {
   white-space: pre;
 }
 
-pre code {
+code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 }
 

@@ -44,7 +44,7 @@ px connect slack</code></pre>
 
     <h2>3. 核心概念</h2>
 
-    <h2>3.1 Serve：让应用找到 Pi</h2>
+    <h3>3.1 Serve：让应用找到 Pi</h3>
     <p>PX 将本机 Pi 暴露为符合 OpenAI Agents API 规范的服务端点。应用可以：</p>
     <ul>
       <li>发起新任务（创建 Session）</li>
@@ -53,7 +53,7 @@ px connect slack</code></pre>
       <li>断开连接后随时回来（Session 不随连接消失）</li>
     </ul>
 
-    <h2>3.2 Connect：让 Pi 访问外部世界</h2>
+    <h3>3.2 Connect：让 Pi 访问外部世界</h3>
     <p>通过 <code>px connect &lt;service&gt;</code> 将外部服务注册为 Pi 的可用能力。连接后 Pi 可以：</p>
     <ul>
       <li>读取 GitHub Issue</li>
@@ -63,7 +63,7 @@ px connect slack</code></pre>
     </ul>
     <p>凭证在连接时完成授权，不进入对话上下文。Pi 只感知到“这些操作现在可以执行”。</p>
 
-    <h2>3.3 Session：工作的基本单位</h2>
+    <h3>3.3 Session：工作的基本单位</h3>
     <p>Agent 的工作很少在一次请求内结束。一次 Bug 调查可能演变为修改，修改进入 Review，Review 又引出新的问题。因此 PX 以 Session 而非 Request 为持续工作的基本单位：</p>
     <pre><code>请求 → Session → 工作 → 停止
                        （任意时间间隔）
@@ -74,7 +74,7 @@ px connect slack</code></pre>
       <li>下一次请求通过 Session ID 恢复到同一上下文</li>
     </ul>
 
-    <h2>3.4 Watch：让 Session 在未来醒来</h2>
+    <h3>3.4 Watch：让 Session 在未来醒来</h3>
     <p>PX 允许一个 Session 在停止前留下 Watch，声明“什么条件值得让我恢复”。条件命中时，PX 恢复该 Session，原有上下文完整保留。</p>
     <pre><code>Session
    ↓ 留下
@@ -93,7 +93,7 @@ px connect slack</code></pre>
 
     <h2>4. Watch 详解</h2>
 
-    <h2>4.1 声明方式：由 Agent 创建，而非人工配置</h2>
+    <h3>4.1 声明方式：由 Agent 创建，而非人工配置</h3>
     <p>Watch 不需要用户编写规则语言（如 <code>ON event WHERE ... THEN ...</code>）。用户只需用自然语言表达意图：</p>
     <blockquote><p>“如果老板给我发邮件，告诉我。”</p></blockquote>
     <p>后续工作由 Agent 自行决定：</p>
@@ -105,7 +105,7 @@ px connect slack</code></pre>
       <li>何时停止观察</li>
     </ul>
 
-    <h2>4.2 条件判断的两级模型</h2>
+    <h3>4.2 条件判断的两级模型</h3>
     <p>代码级判断——条件可确定化为布尔逻辑时，不唤醒 Agent，也不调用模型：</p>
     <pre><code>事件 → 代码判断 → true → 恢复 Session</code></pre>
     <p>适用场景：</p>
@@ -127,7 +127,7 @@ px connect slack</code></pre>
       <li>等到“这件事值得继续处理”时再回来</li>
     </ul>
 
-    <h2>4.3 时间是一种特殊事件</h2>
+    <h3>4.3 时间是一种特殊事件</h3>
     <p>定时触发不调度整个 Agent，而是调度一次“注意力检查”：</p>
     <pre><code>时间到 → 检查 → 有值得处理的变化？→ 否：什么都不发生
                                    → 是：恢复 Session</code></pre>
@@ -138,12 +138,12 @@ px connect slack</code></pre>
       <li>“一直检查直到 Release 发布” = 重复检查，命中即停</li>
     </ul>
 
-    <h2>4.4 动态规划：下一步在下一步决定</h2>
+    <h3>4.4 动态规划：下一步在下一步决定</h3>
     <p>Watch 可以链式产生。Session 因某事件醒来后，处理完当前工作可以再留下新的 Watch：</p>
     <pre><code>Session → Watch A → 事件 A → Session → Watch B → 事件 B → ...</code></pre>
     <p>无需预先定义完整 Workflow。示例：邮件中提到“API 下周发布”→ 处理邮件 → 留下 Watch“发布后再检查一次”→ 停止。</p>
 
-    <h2>4.5 资源模型：Agent 无需常驻</h2>
+    <h3>4.5 资源模型：Agent 无需常驻</h3>
     <pre><code>工作（分钟级） → 停止（天级） → 事件命中 → 恢复</code></pre>
     <p>长期运行的不是进程，而是 Session + Watch 的组合。</p>
 
