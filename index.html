@@ -8,8 +8,8 @@
 <style>a { text-decoration: none; color: #1d4ed8 } a:hover { color: #1e40af }</style>
 </head>
 <body>
-<pre style="font-size: 12px">{% assign txt_files = site.static_files | where: "extname", ".txt" | sort: "path" %}{% for f in txt_files %}
-{% assign base = f.name | remove: ".txt" %}<a href="/read.html?file={{ base | url_encode }}">{{ base }}</a>{% endfor %}
+<pre>{% assign txt_files = site.static_files | where: "extname", ".txt" | sort: "path" %}{% for f in txt_files %}
+<a href="{{ f.path }}">{{ f.name | remove: ".txt" }}</a>{% endfor %}
 </pre>
 </body>
 </html>
