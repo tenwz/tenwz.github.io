@@ -1,24 +1,20 @@
 # 滕文证 Teng Wenzheng
 
-模仿 [ssi.inc](https://ssi.inc) 的极简风格：深色底、简洁字体、荧光绿链接，除一段基础样式表外没有任何多余样式。
+纯粹的 txt 网站：主页就是一个文件目录，点开即原始 `.txt` 纯文本。无样式、无构建、无依赖。
 
 部署在 GitHub Pages：<https://tenwz.github.io>
-
-纯静态 HTML，无构建步骤、无依赖；样式表只有几行，仅保证基本可读性。
 
 ## 文件结构
 
 ```
-├── index.html          # 主页（介绍 / 文章 / 项目 / 联系），兼作文章列表
-├── posts/              # 文章目录，每篇文章一个 HTML 文件
-│   └── px.html
-└── css/style.css       # 十几行基础样式（深底 + 等宽字体 + 居中栏宽）
+├── index.html   # 目录页，只有 txt 文件的链接（浏览器默认样式）
+└── px.txt       # 文章，纯文本
 ```
 
 ## 如何写新文章
 
-1. 复制 `posts/px.html` 为新文件，改标题、日期和正文。
-2. 在 `index.html` 的文章列表加一行 `<li>`（注意相对路径：文章内引用样式是 `../css/style.css`，主页里是 `css/style.css`）。
+1. 在根目录新建一个 `.txt` 文件，直接写正文。
+2. 在 `index.html` 的 `<pre>` 里加一行 `<a href="xxx.txt">xxx.txt</a>`。
 3. 提交推送，约一分钟后自动上线。
 
 ## 绑定自定义域名
