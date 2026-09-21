@@ -1,0 +1,8 @@
+https://mp.weixin.qq.com/s/DOD4R70KuUN8qzRlMxyOdw
+Personal Agent 想要成为高频场景，必须要有用户想要高频打开的钩子，订机票，购物，填表单都是一次性的场景，
+这个钩子除了信息流我想不出别的了。
+
+Muse Feed 也好，Grok Bot 也好，都面对曾经的千问相同的问题，不解决，还是走千问的老路
+
+
+
