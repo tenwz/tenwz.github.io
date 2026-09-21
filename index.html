@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>tenwz</title>
-<style>a { text-decoration: none }</style>
+<style>a { text-decoration: none; color: #555 } a:hover { color: #222 }</style>
 </head>
 <body>
 <pre>{% assign txt_files = site.static_files | where: "extname", ".txt" | sort: "path" %}{% for f in txt_files %}
