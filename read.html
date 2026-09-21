@@ -1,0 +1,30 @@
+---
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>芦苇</title>
+<style>
+  body { margin: 0 auto; max-width: 42em; padding: 1em; }
+  pre { white-space: pre-wrap; word-break: break-word; font-size: 16px; line-height: 1.7; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  a { text-decoration: none; color: #1d4ed8 }
+</style>
+</head>
+<body>
+<pre id="content">加载中…</pre>
+<script>
+  const name = new URLSearchParams(location.search).get("file");
+  if (name && /^[A-Za-z0-9._-]+$/.test(name)) {
+    document.title = name.replace(/\.txt$/, "") + " · 芦苇";
+    fetch(encodeURIComponent(name))
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(t => { document.getElementById("content").textContent = t; })
+      .catch(() => { document.getElementById("content").textContent = "加载失败，请返回重试。"; });
+  } else {
+    document.getElementById("content").textContent = "未指定文件。";
+  }
+</script>
+</body>
+</html>
