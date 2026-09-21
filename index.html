@@ -9,7 +9,7 @@
 </head>
 <body>
 <pre>{% assign txt_files = site.static_files | where: "extname", ".txt" | sort: "path" %}{% for f in txt_files %}
-<a href="{{ f.path }}">{{ f.name }}</a>{% endfor %}
+<a href="{{ f.path }}">{{ f.name | remove: ".txt" }}</a>{% endfor %}
 </pre>
 </body>
 </html>
