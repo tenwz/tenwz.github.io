@@ -8,12 +8,12 @@
 </head>
 <body>
 {% assign txt_files = site.static_files | where: "extname", ".txt" | sort: "path" %}{% for f in txt_files %}
-<h2>{{ f.name | remove: ".txt" }}</h2>
-<pre data-file="{{ f.path | relative_url | escape }}"></pre>{% endfor %}
+<template data-file="{{ f.path | relative_url | escape }}"></template>{% endfor %}
+<pre id="feed"></pre>
 <script>
-document.querySelectorAll('[data-file]').forEach(async el => {
-  el.textContent = await fetch(el.dataset.file).then(response => response.text());
-});
+const files = [...document.querySelectorAll('[data-file]')];
+Promise.all(files.map(file => fetch(file.dataset.file).then(response => response.text())))
+  .then(text => document.querySelector('#feed').textContent = text.join('\n\n\n'));
 </script>
 </body>
 </html>
