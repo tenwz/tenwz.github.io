@@ -5,15 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>芦苇</title>
+<style>a { text-decoration: none; color: #1d4ed8 } a:hover { color: #1e40af }</style>
 </head>
 <body>
-{% assign txt_files = site.static_files | where: "extname", ".txt" | sort: "path" %}{% for f in txt_files %}
-<template data-file="{{ f.path | relative_url | escape }}"></template>{% endfor %}
-<pre id="feed"></pre>
-<script>
-const files = [...document.querySelectorAll('[data-file]')];
-Promise.all(files.map(file => fetch(file.dataset.file).then(response => response.text())))
-  .then(text => document.querySelector('#feed').textContent = text.join('\n\n\n'));
-</script>
+<pre>{% assign txt_files = site.static_files | where: "extname", ".txt" | sort: "path" %}{% for f in txt_files %}
+<a href="{{ f.path }}">{{ f.name | remove: ".txt" }}</a>{% endfor %}
+</pre>
 </body>
 </html>
