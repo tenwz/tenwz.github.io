@@ -1,0 +1,6 @@
+1. 移动端 App
+2. 手动配置选择各种 API，默认连接合作的免费 API
+3. session 对话记录 本地化，作为最高优先级，可以导出
+4. 插件配置化，类似 deepseek harness
+5. 支持云端 Runtime 配置在电脑
+6. Task 和 A2A 作为最高优先级
